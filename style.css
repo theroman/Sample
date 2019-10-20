@@ -1,0 +1,236 @@
+html {
+    min-height: 235px;
+}
+
+body {
+    min-width: 450px;
+    max-width: 80%;
+    background: #f9f9f9;
+    min-height: 100%;
+}
+
+.modal-header h2 {
+    text-align: right;
+    padding-left: 20px;
+    font-size: 24pt;
+    color:White;
+}
+
+.modal-header {
+    background: #556d7c;
+    max-height: 70px;
+    border-radius: 0px;
+}   
+
+.modal-footer {
+    background: #556d7c;
+    border-radius: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-height: 130px;
+    
+}
+.display-false {
+    display: none;
+}
+
+.start-recording {
+    background-image: url("/images/record.svg");
+    width: 70px;
+    height: 70px;
+    background-repeat: no-repeat;
+    margin-left: 33%;
+    margin-right: auto;
+    cursor: pointer;
+    float: left;
+    background-size: 165%;
+    background-position: center;
+
+
+}
+
+.stop-recording {
+    background-image: url("/images/stop.svg");
+    width: 70px;
+    height: 70px;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: 33%;
+    cursor: pointer;
+    float: right;
+    background-size: 165%;
+    background-position: center;
+}
+
+.not-active {
+    opacity: 0.4;
+    cursor: default !important;
+}
+
+.recording {
+    animation: flash linear 1.5s infinite;
+}
+
+@keyframes flash {
+  0% { opacity: 1; } 
+  50% { opacity: .1; } 
+  100% { opacity: 1; }
+}
+
+#recording-controls {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+#waveform {
+    margin-top:10px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 350px;
+    display: block;
+    position: relative;
+    margin-bottom: 10px;
+
+}
+
+#wave-timeline {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 350px;
+    margin-bottom: 16px;
+}
+
+#sample_start, #sample_length {
+    max-width: 50px;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+#sample-controls {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#export {
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 24px;
+}
+
+#donate {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+#sample-controls {
+    text-align: center;
+}
+
+
+#player-control {
+    margin-bottom: 12px;
+}
+
+#player-control button {
+    margin-right: 2px; 
+}
+
+
+.wavesurfer-region:active .wavesurfer-handle {
+    background-color: hsla(37, 94%, 51%, 0.48) !important;
+}
+
+.wavesurfer-region:hover .wavesurfer-handle {
+    background-color: hsla(37, 94%, 51%, 0.48) !important;
+}
+
+
+
+.reversed-pressed {
+    background-color: rgba(52, 152, 219, 0.976);
+    color:white
+
+}
+
+#donateMsg {
+    color: white;
+    font-size: 14px;
+    font-weight: 300;
+    margin-right: 10px;
+    margin-top: auto;
+    letter-spacing: 0.3px;
+    line-height: 1;
+}
+
+#donateButton, #downloadButton, #start-end-control, h2 {
+    letter-spacing: 0.3px;
+}
+
+.contact-me, .tutorial {
+    color: white;
+    font-size: 20px;
+    margin-top: 11px;
+    margin-left: 8px;
+}
+
+.contact-me:hover, .tutorial:hover {
+    color: darkturquoise;
+    cursor: pointer;
+}
+
+.tippy-tooltip {
+    opacity: 0.95;
+    font-size: 12px;
+}
+
+.tippy-tooltip.light-theme {
+    background-color: #f6f6f6;
+    border: 1px solid darkslategray;
+    color: black;
+  }
+
+
+.how-to {
+    letter-spacing: 0.3px;
+    font-size: 13px;
+  }
+
+.how-to h6 {
+      font-size: 13px;
+      margin-bottom: 2px;
+      font-weight: 800;
+  }
+
+.delete {
+    color: black;
+}
+
+.btn-black {
+    border-color: black;
+}
+
+.delete:hover {
+    background-color:black;
+    color: white;
+}
+
+.btn-black:hover .delete {
+    color: white;
+}
+
+.delete i:hover .delete {
+    background-color: black;
+}
+
+.how-to #record {
+    font-weight: bold;
+    color: red;
+}
+
+.how-to #stop {
+    font-weight: bold;
+}
