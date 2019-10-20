@@ -1,7 +1,7 @@
 {
   "name": "Sample",
   "version": "1.0.0",
-  "description": "Sample and manipulate audio directly from your browser",
+  "description": "Sample and edit audio directly from your browser",
   "icons": {
     "128": "images/icon_128.png"
   },
