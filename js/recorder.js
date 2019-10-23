@@ -8,7 +8,9 @@ export default class Recorder {
     this.recording = null;
   }
   async startRecording() {
-    if (sessionStorage.getItem('recording_started') != 'true') {
+    let recordingStarted = await chrome.storage.local.get('recording_started');
+    recordingStarted = recordingStarted.recording_started;
+    if (recordingStarted != true) {
       const audioContext = new AudioContext;
       this.stream = await chrome.tabCapture.capture(this.CONFIG.CAPTURE_PROPERTIES);
       const input = audioContext.createMediaStreamSource(this.stream);
@@ -16,11 +18,15 @@ export default class Recorder {
       this.recording = new WebAudioRecorder(input, this.CONFIG.WORKER_PROPERTIES);
       this.recording.onComplete = (recorder, blob) => this.storeRecording(blob, 'regular');
       this.recording.startRecording();
-      sessionStorage.setItem('recording_started', true);
+      await chrome.storage.local.set({'recording_started': true});
+      recordingStarted = true;
     }
+    return recordingStarted;
   }
 
-  storeRecording = async (blob, eventType) => {
+  async storeRecording(blob, eventType) {
+    this.stream.getAudioTracks()[0].stop();
+    this.recording = null;
     const dataURL = window.URL.createObjectURL(blob);
     await chrome.storage.local.set({'recordingURL': dataURL});
     const data = {'msg': 'recordingFinished', 'recordingURL': dataURL};
@@ -28,27 +34,31 @@ export default class Recorder {
       await this.setReverseStatus(data);
     }
     try {
+      await chrome.storage.local.set({'recording_started': false});
       this.port.postMessage(data);
     } catch (error) {
-      //
+      console.log(error);
     }
   }
 
   async stopRecording() {
-    if (sessionStorage.getItem('recording_started') === 'true') {
+    let recordingStarted = await chrome.storage.local.get('recording_started');
+    recordingStarted = recordingStarted.recording_started;
+    if (recordingStarted == true) {
       if (this.recording) {
         await this.recording.finishRecording();
-        this.stream.getAudioTracks()[0].stop();
-        this.recording = null;
       }
-      sessionStorage.setItem('recording_started', false);
     }
   }
 
-  setReverseStatus = async (data) => {
+  async setReverseStatus(data) {
     let wasReversed = await chrome.storage.local.get('was_reversed');
     wasReversed = wasReversed.was_reversed;
     data.wasReversed = !wasReversed;
-    chrome.storage.local.set({'was_reversed': data.wasReversed});
+    await chrome.storage.local.set({'was_reversed': data.wasReversed});
+  }
+
+  refreshPort(port) {
+    this.port = port;
   }
 }

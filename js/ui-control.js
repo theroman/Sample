@@ -31,7 +31,7 @@ const initFinishedState = async (data) => {
   data.recordButtonStatus = 'active';
   data.stopButtonStatus = 'not-active';
   reverseButtonStatus = await getReverseButtonStatus();
-  updateRecodringControl(data);
+  updateRecodringControls(data);
   updateSampleControl(data);
   updateFooter(data);
 };
@@ -40,26 +40,38 @@ const recordingStartedState = (data) => {
   data.recordButtonStatus = 'recording';
   data.stopButtonStatus = 'active';
   resetWaveform(data);
-  updateRecodringControl(data);
+  updateRecodringControls(data);
   updateSampleControl(data);
   updateFooter(data);
 };
 
 const recordingFinishedState = async (data) => {
   reverseButtonStatus = await getReverseButtonStatus(data);
-  data.recordButtonStatus = 'active';
-  data.stopButtonStatus = 'not-active';
-  updateRecodringControl(data);
+
+  updateRecodringControls(data);
   updateSampleControl(data);
   updateFooter(data);
 };
 
-const updateRecodringControl = (data) => {
+const updateRecodringControls = async (data) => {
+  await setRecodringControlsStatus(data);
   const html = `<div class="${data.recordButtonStatus} start-recording"></div>
                 <div class="${data.stopButtonStatus} stop-recording"></div>`;
   document.querySelector('#recording-controls').innerHTML = html;
 };
 
+const setRecodringControlsStatus = async (data) => {
+  let recordingStarted = await chrome.storage.local.get('recording_started');
+  recordingStarted = recordingStarted.recording_started;
+  console.log(recordingStarted);
+  if (recordingStarted) {
+    data.recordButtonStatus = 'recording';
+    data.stopButtonStatus = 'active';
+  } else {
+    data.recordButtonStatus = 'active';
+    data.stopButtonStatus = 'not-active';
+  }
+};
 
 const updateSampleControl = (data) => {
   let html = '';

@@ -6,11 +6,12 @@ let recorder;
 const CONFIG = new Config();
 
 chrome.runtime.onStartup.addListener(() => {
-  chrome.storage.local.clear();
+  clearLocalStorage();
 });
 
 chrome.extension.onConnect.addListener( (port) => {
   port.onMessage.addListener( async (message) => {
+    console.log(message.msg);
     if (message.msg == 'init') {
       init(port);
     }
@@ -30,28 +31,33 @@ chrome.extension.onConnect.addListener( (port) => {
 });
 
 const init = async (port) => {
-  if (recorder) {
-    recorder.stopRecording();
+  if (!recorder) {
+    recorder = new Record(port);
+  } else {
+    recorder.refreshPort(port);
   }
   const data = await chrome.storage.local.get('recordingURL');
-  port.postMessage({'msg': 'initFinished', 'recordingURL': data.recordingURL});
-  recorder = new Record(port);
-}
+  const recordingURL = data.recordingURL;
+  port.postMessage({'msg': 'initFinished', 'recordingURL': recordingURL});
+};
 
-const startRecording = (port) => {
-  chrome.storage.local.clear();
-    if (!recorder) {
-      recorder = new Record(port);
-    }
+const startRecording = async (port) => {
+  clearLocalStorage(['recordingURL']);
+  if (!recorder) {
+    recorder = new Record(port);
+  }
+  const recordingStarted = await recorder.startRecording();
+  console.log(recordingStarted);
+  if (recordingStarted) {
     port.postMessage({'msg': 'recordingStarted', 'hasWaveSurferLoaded': false});
-    recorder.startRecording();
-}
+  }
+};
 
 const stopRecording = () => {
   if (recorder != undefined) {
     recorder.stopRecording();
   }
-}
+};
 
 const reverseSample = async (data) => {
   data.reverse = true;
@@ -134,4 +140,15 @@ const download = (blob) => {
   a.download = `recording_${getCurrentDatetime()}.wav`;
   a.click();
   URL.revokeObjectURL(blobUrl);
+};
+
+
+const clearLocalStorage = async (keysToRemove) => {
+  const defaultKeys = ['was_reversed', 'sample_start', 'sample_duration'];
+  if (!keysToRemove) keysToRemove = [];
+  keysToRemove = keysToRemove.concat(defaultKeys);
+  if (!recorder) {
+    keysToRemove.push('recording_started');
+  }
+  chrome.storage.local.remove(keysToRemove);
 };
