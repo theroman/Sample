@@ -3,6 +3,7 @@ import Config from './js/config.js';
 import {getCurrentDatetime} from './js/utils.js';
 
 let recorder;
+let webAudioRecorderConfig;
 const CONFIG = new Config();
 
 chrome.runtime.onStartup.addListener(() => {
@@ -11,7 +12,6 @@ chrome.runtime.onStartup.addListener(() => {
 
 chrome.extension.onConnect.addListener( (port) => {
   port.onMessage.addListener( async (message) => {
-    console.log(message.msg);
     if (message.msg == 'init') {
       init(port);
     }
@@ -32,7 +32,8 @@ chrome.extension.onConnect.addListener( (port) => {
 
 const init = async (port) => {
   if (!recorder) {
-    recorder = new Record(port);
+    webAudioRecorderConfig = getWebAudioRecorderConfig();
+    recorder = new Record(port, webAudioRecorderConfig);
   } else {
     recorder.refreshPort(port);
   }
@@ -44,10 +45,9 @@ const init = async (port) => {
 const startRecording = async (port) => {
   clearLocalStorage(['recordingURL']);
   if (!recorder) {
-    recorder = new Record(port);
+    recorder = new Record(port, webAudioRecorderConfig);
   }
   const recordingStarted = await recorder.startRecording();
-  console.log(recordingStarted);
   if (recordingStarted) {
     port.postMessage({'msg': 'recordingStarted', 'hasWaveSurferLoaded': false});
   }
@@ -152,3 +152,9 @@ const clearLocalStorage = async (keysToRemove) => {
   }
   chrome.storage.local.remove(keysToRemove);
 };
+
+const getWebAudioRecorderConfig = (config) => {
+  const webAudioRecorderConfig = CONFIG.WORKER_PROPERTIES;
+  webAudioRecorderConfig.additional_config = config || {};
+  return webAudioRecorderConfig;
+}

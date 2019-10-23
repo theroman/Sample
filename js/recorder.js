@@ -1,11 +1,12 @@
 import Config from './config.js';
 
 export default class Recorder {
-  constructor(port) {
+  constructor(port, webAudioRecorderConfig) {
     this.CONFIG = new Config();
     this.port = port;
     this.stream = null;
     this.recording = null;
+    this.webAudioRecorderConfig = webAudioRecorderConfig;
   }
   async startRecording() {
     let recordingStarted = await chrome.storage.local.get('recording_started');
@@ -15,7 +16,7 @@ export default class Recorder {
       this.stream = await chrome.tabCapture.capture(this.CONFIG.CAPTURE_PROPERTIES);
       const input = audioContext.createMediaStreamSource(this.stream);
       input.connect(audioContext.destination);
-      this.recording = new WebAudioRecorder(input, this.CONFIG.WORKER_PROPERTIES);
+      this.recording = new WebAudioRecorder(input, this.webAudioRecorderConfig);
       this.recording.onComplete = (recorder, blob) => this.storeRecording(blob, 'regular');
       this.recording.startRecording();
       await chrome.storage.local.set({'recording_started': true});
