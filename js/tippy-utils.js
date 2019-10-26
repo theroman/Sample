@@ -3,10 +3,10 @@ const howToUse = `<div class="how-to">
 Play audio on page; Hit the <span id="record">record</span> button to capture it, press the <span id="stop">stop</span> button to finish your recording.
 </div>`;
 
-const confirmDelete = `<div class="confirm-delete">
-<div id="delete-true">YES</div>
-<div id="delete-false">NO</div>
-</div>`;
+const menu = `<nav id="menu">
+<div class="menu-item"><i class="fas icon-wave"></i></div>
+<div class="menu-item preferences"><i class="fas fa-cog"></i></div>
+</nav>`;
 
 export const elementClassToTooltipConfig = {
   '.stop-recording': {
@@ -45,3 +45,13 @@ export const elementClassToTooltipConfig = {
     content: 'Adjust start point',
   },
 };
+
+export const menuConfig = {
+    content: menu,
+    distance: 3,
+    offset: "5, 0",
+    theme: 'sample',
+    interactive: true,
+    arrow: false,
+    trigger: 'click',
+}

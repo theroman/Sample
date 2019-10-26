@@ -32,7 +32,7 @@ chrome.extension.onConnect.addListener( (port) => {
 
 const init = async (port) => {
   if (!recorder) {
-    webAudioRecorderConfig = getWebAudioRecorderConfig();
+    webAudioRecorderConfig = getWebAudioRecorderConfig({timeLimit: CONFIG.SAMPLE_PROPERTIES.timeLimit});
     recorder = new Record(port, webAudioRecorderConfig);
   } else {
     recorder.refreshPort(port);

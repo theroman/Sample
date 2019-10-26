@@ -14,7 +14,7 @@ export default class Config {
     this.SAMPLE_PROPERTIES = {
       sampleRate: 44100,
       numChannels: 2,
-      timeLimit: 300,
+      timeLimit: 15 * 60,
       mimeType: 'audio/wav',
     };
     this.WAVE_PROPERTIES = {

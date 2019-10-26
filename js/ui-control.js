@@ -1,4 +1,4 @@
-import {elementClassToTooltipConfig} from './tippy-utils.js';
+import {elementClassToTooltipConfig, menuConfig} from './tippy-utils.js';
 let reverseButtonStatus = '';
 
 export const updateUI = (data) => {
@@ -127,7 +127,7 @@ const updateDonate = () => {
 };
 
 const updateFooter = (data) => {
-  const modalFooter = document.querySelector('.modal-footer');
+  const modalFooter = document.querySelector('.recording-footer');
   if (data.hasWaveSurferLoaded) {
     modalFooter.classList.remove('display-false');
     updateExport();
@@ -149,26 +149,30 @@ const getReverseButtonStatus = async () => {
 const getPopupInit = () => {
   return `
   <div class="modal-header">
+    <i class="fas fa-bars menu"></i>
     <h2>Sample</h2>
-    <div id="extension-control">
     <i data-tippy-content="Contact me" class="tt contact-me fas fa-envelope"></i>
     <i class="fas tutorial fa-question-circle"></i>  
-    </div>
   </div>
   <div class="modal-body">
-    <div id="recording-controls"></div>
-    <div id="waveform"></div>
-    <div id="wave-timeline"></div>
-    <div id="sample-controls"></div>
-  </div>
-  <div class="modal-footer display-false">
-    <div id="export"></div>
-    <div id="donate"></div>
+    <div id="recording"> 
+      <div class="recording-body">
+        <div id="recording-controls"></div>
+        <div id="waveform"></div>
+        <div id="wave-timeline"></div>
+        <div id="sample-controls"></div>
+      </div>
+      <div class="recording-footer display-false">
+        <div id="export"></div>
+        <div id="donate"></div>
+      </div>
+    </div>
   </div>`;
 };
 
 const initTooltips = () => {
   tippy('.tt');
+  tippy('.menu', menuConfig);
 };
 
 export const updateStartPoint = (newStartPoint) => {

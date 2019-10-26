@@ -7,11 +7,14 @@ body {
     max-width: 80%;
     background: #f9f9f9;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-header h2 {
     text-align: right;
-    padding-left: 20px;
+    padding-left: 15px;
+    padding-right: 220px;
     font-size: 24pt;
     color:White;
 }
@@ -20,9 +23,56 @@ body {
     background: #556d7c;
     max-height: 70px;
     border-radius: 0px;
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    justify-content: flex-start;
 }   
 
-.modal-footer {
+.modal-body {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    border: solid 1px;
+    background: #49505e;
+    margin-bottom: 8px; 
+    margin-left: 7px;
+    margin-right: 7px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+
+}
+
+.menu-item:hover {
+    cursor: pointer;
+    background: #8b94a5;
+}
+
+.menu-item i {
+    vertical-align: middle;
+}
+
+#recording {
+    order: 1;
+    flex-basis: 100%;
+    z-index: 0;
+    margin-top: 20px;
+}
+
+.recording-footer{
     background: #556d7c;
     border-radius: 0px;
     width: 100%;
@@ -124,6 +174,8 @@ body {
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #sample-controls {
@@ -170,14 +222,18 @@ body {
     letter-spacing: 0.3px;
 }
 
-.contact-me, .tutorial {
+.contact-me, .tutorial, .menu {
     color: white;
     font-size: 20px;
     margin-top: 11px;
-    margin-left: 8px;
 }
 
-.contact-me:hover, .tutorial:hover {
+.tutorial {
+    margin-left: 10px;
+}
+
+
+.contact-me:hover, .tutorial:hover, .menu:hover {
     color: darkturquoise;
     cursor: pointer;
 }
@@ -191,6 +247,13 @@ body {
     background-color: #f6f6f6;
     border: 1px solid darkslategray;
     color: black;
+  }
+
+  .tippy-tooltip.sample-theme {
+    background-color:rgba(68,87,99,0.8);
+    color: #c8b8c0;
+    border-radius: 0px;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
   }
 
 
@@ -234,3 +297,41 @@ body {
 .how-to #stop {
     font-weight: bold;
 }
+
+@font-face {
+    font-family: 'icomoon';
+    src:  url('fonts/icomoon.eot?f6a5ip');
+    src:  url('fonts/icomoon.eot?f6a5ip#iefix') format('embedded-opentype'),
+      url('fonts/icomoon.ttf?f6a5ip') format('truetype'),
+      url('fonts/icomoon.woff?f6a5ip') format('woff'),
+      url('fonts/icomoon.svg?f6a5ip#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+  }
+  
+  [class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-stop:before {
+    content: "\e900";
+  }
+  .icon-record:before {
+    content: "\e901";
+  }
+  .icon-wave:before {
+    content: "\e902";
+  }
+  
