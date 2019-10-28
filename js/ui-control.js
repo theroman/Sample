@@ -3,7 +3,7 @@ let reverseButtonStatus = '';
 
 export const updateUI = (data) => {
   if (data.msg == 'init') {
-    initState();
+    initState(data);
   }
   if (data.msg == 'initFinished') {
     initFinishedState(data);
@@ -23,8 +23,8 @@ export const updateUI = (data) => {
   initTooltips();
 };
 
-const initState = () => {
-  document.querySelector('body').innerHTML = getPopupInit();
+const initState = (data) => {
+  document.querySelector('body').innerHTML = getPopupInit(data);
 };
 
 const initFinishedState = async (data) => {
@@ -146,7 +146,7 @@ const getReverseButtonStatus = async () => {
   return '';
 };
 
-const getPopupInit = () => {
+const getPopupInit = (data) => {
   return `
   <div class="modal-header">
     <i class="fas fa-bars menu"></i>
@@ -155,6 +155,15 @@ const getPopupInit = () => {
     <i class="fas tutorial fa-question-circle"></i>  
   </div>
   <div class="modal-body">
+    ${getRecordingSection(data.page)}
+    ${getPreferencesSection(data.page)}
+  </div>`;
+};
+
+const getRecordingSection = (page) => {
+  let html = '';
+  if (page == 'recording') {
+    html = `
     <div id="recording"> 
       <div class="recording-body">
         <div id="recording-controls"></div>
@@ -167,8 +176,33 @@ const getPopupInit = () => {
         <div id="donate"></div>
       </div>
     </div>
-  </div>`;
+  `;
+  }
+  return html;
 };
+
+const getPreferencesSection = (page) => {
+  let html = '';
+  if (page == 'preferences') {
+    html = `
+    <div id="preferences">
+      <div class="preferences-body">
+        <label>Sample rate: </label>
+        <select name="sample-rate">
+          <option value="44100">44100 kHz</option>
+          <option value="48000">48000 kHz</option>
+          <option value="96000">96000 kHz</option>
+        </select>
+        <label>Sample type: </label>
+        <select name="sample-type">
+          <option value="stereo">Stereo</option>
+          <option value="mono">Mono</option>
+        </select>
+      </div>
+    </div>`;
+  }
+  return html;
+}
 
 const initTooltips = () => {
   tippy('.tt');

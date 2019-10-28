@@ -4,8 +4,8 @@ Play audio on page; Hit the <span id="record">record</span> button to capture it
 </div>`;
 
 const menu = `<nav id="menu">
-<div class="menu-item"><i class="fas icon-wave"></i></div>
-<div class="menu-item preferences"><i class="fas fa-cog"></i></div>
+<div class="menu-item p-recording"><i class="fas icon-wave"></i></div>
+<div class="menu-item p-preferences"><i class="fas fa-cog"></i></div>
 </nav>`;
 
 export const elementClassToTooltipConfig = {

@@ -5,10 +5,12 @@ import Config from './js/config.js';
 const port = chrome.runtime.connect({name: 'communication'});
 let waveSurfer;
 let recordingURL;
+let currentPage;
 const CONFIG = new Config();
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const data = {'msg': 'init'};
+  currentPage = 'recording';
+  const data = {'msg': 'init', 'page': currentPage};
   updateUI(data);
   port.postMessage(data);
 });
@@ -69,6 +71,23 @@ document.addEventListener('click', (e) => {
     port.postMessage(data);
     updateUI(data);
   }
+  if (e.target.closest('.p-preferences')) {
+    if (currentPage != 'preferences') {
+      currentPage = 'preferences';
+      const data = {'msg': 'init', 'page': currentPage};
+      updateUI(data);
+      port.postMessage(data);
+    }
+  }
+  if (e.target.closest('.p-recording')) {
+    if (currentPage != 'recording') {
+      const sampleConfig = getSampleConfig();
+      currentPage = 'recording';
+      const data = {'msg': 'init', 'page': currentPage};
+      updateUI(data);
+      port.postMessage(data);
+    }
+  }
 });
 
 document.addEventListener('mouseover', async (e) => {
@@ -121,4 +140,7 @@ const getSampleStart = () => {
 const getSampleLength = () => {
   return parseFloat(document.querySelector('#sample_length').value);
 };
+
+const getSampleConfig = () => {
+}
 
