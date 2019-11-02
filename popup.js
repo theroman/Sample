@@ -144,13 +144,13 @@ const getSampleLength = () => {
 
 const getSampleConfig = () => {
   return {sampleRate: getPreferencesSampleRate(),
-    sampleChannels: getPreferencesSampleChannels()}
-}
+    sampleChannels: getPreferencesSampleChannels()};
+};
 
 const getPreferencesSampleRate = () => {
   return parseInt(document.querySelector('#sample-rate').selectedOptions[0].value);
-}
+};
 
 const getPreferencesSampleChannels = () => {
   return parseInt(document.querySelector('#sample-type').selectedOptions[0].value);
-}
+};

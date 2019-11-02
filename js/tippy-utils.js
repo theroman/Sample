@@ -47,11 +47,11 @@ export const elementClassToTooltipConfig = {
 };
 
 export const menuConfig = {
-    content: menu,
-    distance: 3,
-    offset: "5, 0",
-    theme: 'sample',
-    interactive: true,
-    arrow: false,
-    trigger: 'click',
-}
+  content: menu,
+  distance: 3,
+  offset: '5, 0',
+  theme: 'sample',
+  interactive: true,
+  arrow: false,
+  trigger: 'click',
+};

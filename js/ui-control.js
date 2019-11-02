@@ -124,7 +124,7 @@ const updateExport = () => {
 const updateDonate = () => {
   const html = `<h5 id="donateMsg">Having fun?</h5>
     <button id="donateButton" class="donate btn btn-info btn-sm">Help me afford a Synthstrom Deluge</button>`;
-    setHTMLIfExists('#donate', html);
+  setHTMLIfExists('#donate', html);
 };
 
 const updateFooter = (data) => {
@@ -208,7 +208,7 @@ const getPreferencesSection = (page) => {
     </div>`;
   }
   return html;
-}
+};
 
 const initTooltips = () => {
   tippy('.tt');
@@ -269,13 +269,13 @@ const hideTutorial = () => {
 const setHTMLIfExists = (selector, html) => {
   const selectorRef = document.querySelector(selector);
   if (selectorRef) {
-    selectorRef.innerHTML = html
+    selectorRef.innerHTML = html;
   }
-}
+};
 
 const updatePreferences = (data) => {
   const sampleRateSelect = document.querySelector('#sample-rate');
   const sampleTypeSelect = document.querySelector('#sample-type');
   if (sampleRateSelect) sampleRateSelect.value = data.currentSampleConfig.sampleRate;
   if (sampleTypeSelect) sampleTypeSelect.value = data.currentSampleConfig.sampleChannels;
-}
+};

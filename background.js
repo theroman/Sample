@@ -46,7 +46,7 @@ const init = async (message, port) => {
   }
   const data = await chrome.storage.local.get('recordingURL');
   const recordingURL = data.recordingURL;
-  port.postMessage({'msg': 'initFinished', 'recordingURL': recordingURL, 'currentSampleConfig': 
+  port.postMessage({'msg': 'initFinished', 'recordingURL': recordingURL, 'currentSampleConfig':
     {sampleRate: currentSampleRate, sampleChannels: currentSampleChannels}});
 };
 
@@ -171,7 +171,7 @@ const getWebAudioRecorderConfig = (config) => {
   config.sampleRate = currentSampleRate;
   webAudioRecorderConfig.additional_config = config || {};
   return webAudioRecorderConfig;
-}
+};
 
 const handleSampleConfig = async (sampleConfig) => {
   let wasUpdated = false;
@@ -179,7 +179,7 @@ const handleSampleConfig = async (sampleConfig) => {
   await getCurrentSampleChannels();
   if (sampleConfig) {
     const sampleRate = canonizeSampleRate(sampleConfig.sampleRate);
-    const sampleChannels = canonizeSampleChannels(sampleConfig.sampleChannels)
+    const sampleChannels = canonizeSampleChannels(sampleConfig.sampleChannels);
     if (sampleRate != currentSampleRate) {
       currentSampleRate = sampleRate;
       await chrome.storage.local.set({'sample_rate': sampleRate});
@@ -192,29 +192,29 @@ const handleSampleConfig = async (sampleConfig) => {
     }
   }
   return wasUpdated;
-}
+};
 
 
 const canonizeSampleRate = (sampleRate) => {
   if (sampleRate < CONFIG.SAMPLE_PROPERTIES.sampleRate || sampleRate > CONFIG.SAMPLE_PROPERTIES.maxSampleRate) {
     sampleRate = CONFIG.SAMPLE_PROPERTIES.sampleRate;
   }
-  return sampleRate
-}
+  return sampleRate;
+};
 
 const canonizeSampleChannels = (sampleChannels) => {
-  if (![1,2].includes(sampleChannels)) {
+  if (![1, 2].includes(sampleChannels)) {
     sampleChannels = 2;
   }
-  return sampleChannels
-}
+  return sampleChannels;
+};
 
 const getCurrentSampleRate = async () => {
   const data = await chrome.storage.local.get('sample_rate');
   currentSampleRate = data.sample_rate || CONFIG.SAMPLE_PROPERTIES.sampleRate;
-}
+};
 
 const getCurrentSampleChannels= async () => {
   const data = await chrome.storage.local.get('sample_channels');
   currentSampleChannels = data.sample_channels || CONFIG.SAMPLE_PROPERTIES.numChannels;
-}
+};
