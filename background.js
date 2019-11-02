@@ -10,6 +10,7 @@ let currentSampleChannels;
 let recordedSampleRate;
 let recordedSampleChannels;
 let wasSampleConfigUpdated;
+const channelsToRecordingType = {1: 'mono', 2: 'stereo'};
 
 chrome.runtime.onStartup.addListener(() => {
   clearLocalStorage();
@@ -148,7 +149,7 @@ const download = (blob) => {
   document.body.appendChild(a);
   a.style = 'display: none';
   a.href = blobUrl;
-  a.download = `recording_${getCurrentDatetime()}.wav`;
+  a.download = `recording_${getCurrentDatetime()}_${recordedSampleRate / 1000}kHz_${channelsToRecordingType[recordedSampleChannels]}.wav`;
   a.click();
   URL.revokeObjectURL(blobUrl);
 };
