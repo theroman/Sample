@@ -1,6 +1,6 @@
 # Sample
 A Google Chrome extension for sampling and editing audio from the web.\
-The audio is recorded with a sampling rate of 44.1/48/96 kHz in mono/stereo and can be trimmed, reversed and exported in a .WAV format.
+The audio is recorded with a sampling rate of 44.1/48/96kHz in mono or stereo, and can be trimmed, reversed and exported in a .WAV format.
 
 ## Getting Started
 
