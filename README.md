@@ -15,6 +15,7 @@ or just clone this repo and follow these steps:
 * [wavesurfer.js](https://wavesurfer-js.org/) - Used to produce the pretty waveform
 * [WebAudioRecorder.js](https://github.com/higuma/web-audio-recorder-js/) - Used to encode the captured audio
 * [Tippy](https://atomiks.github.io/tippyjs/) - Used to display tooltips
+* [chromeExtensionAsync](https://github.com/KeithHenry/chromeExtensionAsync) - Used for ES2017 syntax
 
 ## License
 
