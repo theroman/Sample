@@ -83,7 +83,6 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('.p-recording')) {
     if (currentPage != 'recording') {
       const sampleConfig = getSampleConfig();
-      console.log(sampleConfig);
       currentPage = 'recording';
       const data = {'msg': 'init', 'page': currentPage, 'sampleConfig': sampleConfig};
       updateUI(data);
@@ -153,9 +152,5 @@ const getPreferencesSampleRate = () => {
 }
 
 const getPreferencesSampleChannels = () => {
-  const selectVal = document.querySelector('#sample-type').selectedOptions[0].value;
-  if (selectVal == 'mono') {
-    return 1;
-  }
-  return 2;
+  return parseInt(document.querySelector('#sample-type').selectedOptions[0].value);
 }

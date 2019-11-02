@@ -7,6 +7,9 @@ let webAudioRecorderConfig;
 const CONFIG = new Config();
 let currentSampleRate;
 let currentSampleChannels;
+let recordedSampleRate;
+let recordedSampleChannels;
+let wasSampleConfigUpdated;
 
 chrome.runtime.onStartup.addListener(() => {
   clearLocalStorage();
@@ -33,23 +36,26 @@ chrome.extension.onConnect.addListener( (port) => {
 });
 
 const init = async (message, port) => {
-  let wasSampleConfigUpdated = await handleSampleConfig(message.sampleConfig);
-  if (!recorder || wasSampleConfigUpdated) {
-    webAudioRecorderConfig = getWebAudioRecorderConfig({timeLimit: CONFIG.SAMPLE_PROPERTIES.timeLimit});
+  wasSampleConfigUpdated = await handleSampleConfig(message.sampleConfig);
+  webAudioRecorderConfig = getWebAudioRecorderConfig({timeLimit: CONFIG.SAMPLE_PROPERTIES.timeLimit});
+  if (!recorder) {
     recorder = new Record(port, webAudioRecorderConfig);
   } else {
     recorder.refreshPort(port);
   }
   const data = await chrome.storage.local.get('recordingURL');
   const recordingURL = data.recordingURL;
-  port.postMessage({'msg': 'initFinished', 'recordingURL': recordingURL});
+  port.postMessage({'msg': 'initFinished', 'recordingURL': recordingURL, 'currentSampleConfig': 
+    {sampleRate: currentSampleRate, sampleChannels: currentSampleChannels}});
 };
 
 const startRecording = async (port) => {
   clearLocalStorage(['recordingURL']);
-  if (!recorder) {
+  if (!recorder || wasSampleConfigUpdated) {
     recorder = new Record(port, webAudioRecorderConfig);
   }
+  recordedSampleRate = currentSampleRate;
+  recordedSampleChannels = currentSampleChannels;
   const recordingStarted = await recorder.startRecording();
   if (recordingStarted) {
     port.postMessage({'msg': 'recordingStarted', 'hasWaveSurferLoaded': false});
@@ -89,8 +95,8 @@ const downloadSample = async (data) => {
 
 const renderSampleAudioBuffer = async (data) => {
   const audioCtx = new AudioContext();
-  const offlineCtx = new OfflineAudioContext(currentSampleChannels,
-      currentSampleRate * (data.duration), CONFIG.SAMPLE_PROPERTIES.sampleRate);
+  const offlineCtx = new OfflineAudioContext(recordedSampleChannels,
+      recordedSampleRate * (data.duration), recordedSampleRate);
   const blob = await fetch(data.recordingURL).then((r) => r.blob());
   const audioData = await new Response(blob).arrayBuffer();
   const source = offlineCtx.createBufferSource();
@@ -103,7 +109,7 @@ const renderSampleAudioBuffer = async (data) => {
   source.start(0, data.start, data.duration);
   const renderedBuffer = await offlineCtx.startRendering();
   const byChannelBuffer = [];
-  for (let ch = 0; ch < currentSampleChannels; ++ch) {
+  for (let ch = 0; ch < recordedSampleChannels; ++ch) {
     byChannelBuffer[ch] = renderedBuffer.getChannelData(ch);
   }
   return {buffer: byChannelBuffer, bufferLength: renderedBuffer.length};
@@ -112,8 +118,8 @@ const renderSampleAudioBuffer = async (data) => {
 const encodeBufferToWav = (buffer, bufferLength, encodingWorker) => {
   encodingWorker.postMessage({command: 'init',
     config: {
-      sampleRate: currentSampleRate,
-      numChannels: currentSampleChannels,
+      sampleRate: recordedSampleRate,
+      numChannels: recordedSampleChannels,
     },
     options: {
       timeLimit: CONFIG.SAMPLE_PROPERTIES.timeLimit,
@@ -131,7 +137,9 @@ const encodeBufferToWav = (buffer, bufferLength, encodingWorker) => {
 
 const reverseBuffer = (buffer) => {
   Array.prototype.reverse.call( buffer.getChannelData(0) );
-  Array.prototype.reverse.call( buffer.getChannelData(1) );
+  if (recordedSampleChannels == 2) {
+    Array.prototype.reverse.call( buffer.getChannelData(1) );
+  }
 };
 
 const download = (blob) => {
@@ -207,5 +215,5 @@ const getCurrentSampleRate = async () => {
 
 const getCurrentSampleChannels= async () => {
   const data = await chrome.storage.local.get('sample_channels');
-  currentSampleChannels = data.channels || CONFIG.SAMPLE_PROPERTIES.numChannels;
+  currentSampleChannels = data.sample_channels || CONFIG.SAMPLE_PROPERTIES.numChannels;
 }

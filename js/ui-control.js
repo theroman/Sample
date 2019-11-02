@@ -34,6 +34,7 @@ const initFinishedState = async (data) => {
   updateRecodringControls(data);
   updateSampleControl(data);
   updateFooter(data);
+  updatePreferences(data);
 };
 
 const recordingStartedState = (data) => {
@@ -199,8 +200,8 @@ const getPreferencesSection = (page) => {
         <div class="sample-type-wrapper">
           <label>Sample type: </label>
           <select id="sample-type" name="sample-type">
-            <option value="stereo">Stereo</option>
-            <option value="mono">Mono</option>
+            <option value="2">Stereo</option>
+            <option value="1">Mono</option>
           </select>
         </div>
       </div>
@@ -270,4 +271,11 @@ const setHTMLIfExists = (selector, html) => {
   if (selectorRef) {
     selectorRef.innerHTML = html
   }
+}
+
+const updatePreferences = (data) => {
+  const sampleRateSelect = document.querySelector('#sample-rate');
+  const sampleTypeSelect = document.querySelector('#sample-type');
+  if (sampleRateSelect) sampleRateSelect.value = data.currentSampleConfig.sampleRate;
+  if (sampleTypeSelect) sampleTypeSelect.value = data.currentSampleConfig.sampleChannels;
 }
