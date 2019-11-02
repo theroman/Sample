@@ -24,7 +24,7 @@ export const updateUI = (data) => {
 };
 
 const initState = (data) => {
-  document.querySelector('body').innerHTML = getPopupInit(data);
+  setHTMLIfExists('body', getPopupInit(data));
 };
 
 const initFinishedState = async (data) => {
@@ -57,7 +57,7 @@ const updateRecodringControls = async (data) => {
   await setRecodringControlsStatus(data);
   const html = `<div class="${data.recordButtonStatus} start-recording"></div>
                 <div class="${data.stopButtonStatus} stop-recording"></div>`;
-  document.querySelector('#recording-controls').innerHTML = html;
+  setHTMLIfExists('#recording-controls', html);
 };
 
 const setRecodringControlsStatus = async (data) => {
@@ -106,24 +106,24 @@ const updateSampleControl = (data) => {
             </section>
             `;
   }
-  document.querySelector('#sample-controls').innerHTML = html;
+  setHTMLIfExists('#sample-controls', html);
 };
 
 const resetWaveform = () => {
-  document.querySelector('#waveform').innerHTML = '';
-  document.querySelector('#wave-timeline').innerHTML = '';
+  setHTMLIfExists('#waveform', '');
+  setHTMLIfExists('#wave-timeline', '');
 };
 
 const updateExport = () => {
   const html = `<button id="downloadButton" class="download btn btn-success"><i class="download fas fa-download"></i>    
      Download</button>`;
-  document.querySelector('#export').innerHTML = html;
+  setHTMLIfExists('#export', html);
 };
 
 const updateDonate = () => {
   const html = `<h5 id="donateMsg">Having fun?</h5>
     <button id="donateButton" class="donate btn btn-info btn-sm">Help me afford a Synthstrom Deluge</button>`;
-  document.querySelector('#donate').innerHTML = html;
+    setHTMLIfExists('#donate', html);
 };
 
 const updateFooter = (data) => {
@@ -132,7 +132,7 @@ const updateFooter = (data) => {
     modalFooter.classList.remove('display-false');
     updateExport();
     updateDonate();
-  } else {
+  } else if (modalFooter) {
     modalFooter.classList.add('display-false');
   }
 };
@@ -187,17 +187,22 @@ const getPreferencesSection = (page) => {
     html = `
     <div id="preferences">
       <div class="preferences-body">
-        <label>Sample rate: </label>
-        <select name="sample-rate">
-          <option value="44100">44100 kHz</option>
-          <option value="48000">48000 kHz</option>
-          <option value="96000">96000 kHz</option>
-        </select>
-        <label>Sample type: </label>
-        <select name="sample-type">
-          <option value="stereo">Stereo</option>
-          <option value="mono">Mono</option>
-        </select>
+        <h4>Preferences</h4>
+        <div class="sample-rate-wrapper">
+          <label>Sample rate: </label>
+          <select id="sample-rate" name="sample-rate">
+            <option value="44100">44.1 kHz</option>
+            <option value="48000">48 kHz</option>
+            <option value="96000">96 kHz</option>
+          </select>
+        </div>
+        <div class="sample-type-wrapper">
+          <label>Sample type: </label>
+          <select id="sample-type" name="sample-type">
+            <option value="stereo">Stereo</option>
+            <option value="mono">Mono</option>
+          </select>
+        </div>
       </div>
     </div>`;
   }
@@ -259,3 +264,10 @@ const hideTutorial = () => {
     }
   }
 };
+
+const setHTMLIfExists = (selector, html) => {
+  const selectorRef = document.querySelector(selector);
+  if (selectorRef) {
+    selectorRef.innerHTML = html
+  }
+}

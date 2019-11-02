@@ -67,7 +67,7 @@ export class WaveSurferControl {
         this.ws.pause();
       });
       return true;
-    } catch {
+    } catch (error) {
       return false;
     }
   }

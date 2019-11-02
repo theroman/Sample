@@ -16,6 +16,7 @@ export default class Config {
       numChannels: 2,
       timeLimit: 15 * 60,
       mimeType: 'audio/wav',
+      maxSampleRate: 96000,
     };
     this.WAVE_PROPERTIES = {
       minPixelsPerSecond: 100,

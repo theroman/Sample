@@ -43,7 +43,7 @@ document.addEventListener('click', (e) => {
     waveSurfer.ws.skipBackward();
   }
   if (clickedElementClassList.contains('donate')) {
-    const donationURL = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2A4L9MZ4BVBEC';
+    const donationURL = CONFIG.EXTENSION_PROPERTIES.donationsURL;
     chrome.tabs.create({url: donationURL});
   }
   if (clickedElementClassList.contains('contact-me')) {
@@ -66,8 +66,9 @@ document.addEventListener('click', (e) => {
   }
   if (e.target.closest('.delete')) {
     chrome.storage.local.remove('recordingURL');
+    waveSurfer.ws.destroy();
     waveSurfer = null;
-    const data = {'msg': 'init'};
+    const data = {'msg': 'init', 'page': currentPage};
     port.postMessage(data);
     updateUI(data);
   }
@@ -82,8 +83,9 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('.p-recording')) {
     if (currentPage != 'recording') {
       const sampleConfig = getSampleConfig();
+      console.log(sampleConfig);
       currentPage = 'recording';
-      const data = {'msg': 'init', 'page': currentPage};
+      const data = {'msg': 'init', 'page': currentPage, 'sampleConfig': sampleConfig};
       updateUI(data);
       port.postMessage(data);
     }
@@ -142,5 +144,18 @@ const getSampleLength = () => {
 };
 
 const getSampleConfig = () => {
+  return {sampleRate: getPreferencesSampleRate(),
+    sampleChannels: getPreferencesSampleChannels()}
 }
 
+const getPreferencesSampleRate = () => {
+  return parseInt(document.querySelector('#sample-rate').selectedOptions[0].value);
+}
+
+const getPreferencesSampleChannels = () => {
+  const selectVal = document.querySelector('#sample-type').selectedOptions[0].value;
+  if (selectVal == 'mono') {
+    return 1;
+  }
+  return 2;
+}
