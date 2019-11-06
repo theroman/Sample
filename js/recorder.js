@@ -12,7 +12,8 @@ export default class Recorder {
     let recordingStarted = await chrome.storage.local.get('recording_started');
     recordingStarted = recordingStarted.recording_started;
     if (recordingStarted != true) {
-      const audioContext = new AudioContext({sampleRate: this.webAudioRecorderConfig.additional_config.sampleRate});
+      const audioContext = new AudioContext({sampleRate: this.webAudioRecorderConfig.additional_config.sampleRate,
+        latencyHint: 'playback'});
       this.stream = await chrome.tabCapture.capture(this.CONFIG.CAPTURE_PROPERTIES);
       const input = audioContext.createMediaStreamSource(this.stream);
       input.connect(audioContext.destination);
