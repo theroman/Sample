@@ -18,7 +18,6 @@ chrome.runtime.onStartup.addListener(() => {
 
 chrome.extension.onConnect.addListener( (port) => {
   port.onMessage.addListener( async (message) => {
-    console.log(recorder)
     if (message.msg == 'init') {
       init(message, port);
     }
@@ -44,6 +43,9 @@ const init = async (message, port) => {
     recorder = new Record(port, webAudioRecorderConfig);
   } else {
     recorder.refreshPort(port);
+  }
+  if (!recorder.stream) {
+    await chrome.storage.local.set({'recording_started': false});
   }
   const data = await chrome.storage.local.get('recordingURL');
   const recordingURL = data.recordingURL;
