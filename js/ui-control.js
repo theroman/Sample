@@ -63,6 +63,7 @@ const updateRecodringControls = async (data) => {
 
 const setRecodringControlsStatus = async (data) => {
   let recordingStarted = await chrome.storage.local.get('recording_started');
+  console.log(recordingStarted);
   recordingStarted = recordingStarted.recording_started;
   if (recordingStarted) {
     data.recordButtonStatus = 'recording';
