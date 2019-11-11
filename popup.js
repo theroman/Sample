@@ -94,7 +94,11 @@ document.addEventListener('click', (e) => {
 document.addEventListener('mouseover', async (e) => {
   const clickedElementClassList = e.target.classList;
   if (clickedElementClassList.contains('tutorial')) {
-    const data = {'msg': 'showTutorial', 'hasWaveSurferLoaded': await waveSurfer.hasLoaded};
+    let hasWaveSurferLoaded = false;
+    if (waveSurfer) {
+      hasWaveSurferLoaded = await waveSurfer.hasLoaded
+    }
+    const data = {'msg': 'showTutorial', 'hasWaveSurferLoaded': hasWaveSurferLoaded};
     updateUI(data);
   }
 });

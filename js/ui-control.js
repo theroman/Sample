@@ -236,7 +236,7 @@ const showTutorial = (data) => {
     const elementRef = document.querySelector(elementClass);
     if (elementRef) {
       let tippyInstance;
-      if (elementRef._tippy) {
+      if (elementRef && elementRef._tippy) {
         tippyInstance = elementRef._tippy;
         tippyInstance.enable();
       } else {
@@ -259,7 +259,7 @@ const shouldShowToolip = (elementName, hasWaveSurferLoaded) => {
 const hideTutorial = () => {
   for (const [elementClass, config] of Object.entries(elementClassToTooltipConfig)) {
     const elementRef = document.querySelector(elementClass);
-    if (elementRef._tippy) {
+    if (elementRef && elementRef._tippy) {
       elementRef._tippy.hide();
       elementRef._tippy.disable();
     }

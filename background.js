@@ -18,6 +18,7 @@ chrome.runtime.onStartup.addListener(() => {
 
 chrome.extension.onConnect.addListener( (port) => {
   port.onMessage.addListener( async (message) => {
+    console.log(message)
     if (message.msg == 'init') {
       init(message, port);
     }
