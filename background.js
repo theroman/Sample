@@ -97,6 +97,7 @@ const downloadSample = async (data) => {
   };
 };
 
+
 const renderSampleAudioBuffer = async (data) => {
   const audioCtx = new AudioContext();
   const offlineCtx = new OfflineAudioContext(recordedSampleChannels,
@@ -159,7 +160,7 @@ const download = (blob) => {
 
 
 const clearLocalStorage = async (keysToRemove) => {
-  const defaultKeys = ['was_reversed', 'sample_start', 'sample_duration'];
+  const defaultKeys = ['was_reversed', 'sample_start', 'sample_duration', 'is_loop'];
   if (!keysToRemove) keysToRemove = [];
   keysToRemove = keysToRemove.concat(defaultKeys);
   if (!recorder) {

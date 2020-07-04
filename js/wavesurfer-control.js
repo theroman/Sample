@@ -4,12 +4,12 @@ import {formatTimeCallback, timeInterval, primaryLabelInterval, secondaryLabelIn
 import TimelinePlugin from './external/wavesurfer/plugin/timeline.js';
 import RegionsPlugin from './external/wavesurfer/plugin/regions.js';
 
-
 export class WaveSurferControl {
   constructor(recordingURL) {
     this.recordingURL = recordingURL;
     this.hasLoaded = this.init();
     this.hasRegion = false;
+    this.loop = false;
     this.CONFIG = new Config().WAVE_PROPERTIES;
   }
 
@@ -66,6 +66,14 @@ export class WaveSurferControl {
       this.ws.on('region-out', () => {
         this.ws.pause();
       });
+      this.ws.on('pause', () => {
+        console.log(this.loop);
+        if (this.loop) {
+          if (Math.abs(this.ws.getCurrentTime() - this.region.end) < 0.03) {
+            this.playPause(this.loop);
+          }
+        }
+      });
       return true;
     } catch (error) {
       return false;
@@ -85,13 +93,16 @@ export class WaveSurferControl {
     }
   }
 
-  async playPause() {
+  async playPause(loop=false) {
     const ready = await this.hasLoaded;
     if (ready == true) {
       if (this.ws.isPlaying()) {
         this.ws.pause();
       } else {
         let currentTime = this.ws.getCurrentTime();
+        if (loop == true) {
+          currentTime = this.region.start;
+        }
         if (currentTime >= this.region.end || currentTime < this.region.start) {
           currentTime = this.region.start;
         }
@@ -99,7 +110,6 @@ export class WaveSurferControl {
       }
     }
   };
-
   zoomIn = () => {
     if (this.currentPixelsPerSecond < this.initialPixelsPerSecond) {
       this.currentPixelsPerSecond = this.initialPixelsPerSecond + this.CONFIG.pixelsPerStep;
@@ -172,5 +182,9 @@ export class WaveSurferControl {
   setRegionStartAndDuration = (start, duration) => {
     chrome.storage.local.set({'sample_start': start});
     chrome.storage.local.set({'sample_duration': duration});
+  }
+
+  setLoop = (loopValue) => {
+    this.loop = loopValue;
   }
 }
