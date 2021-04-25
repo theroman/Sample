@@ -20,7 +20,7 @@ body {
 }
 
 .modal-header {
-    background: #556d7c;
+    background: #667b89;
     max-height: 70px;
     border-radius: 0px;
     display: flex;
@@ -73,7 +73,7 @@ body {
 }
 
 .recording-footer{
-    background: #556d7c;
+    background: #667b89;
     border-radius: 0px;
     width: 100%;
     display: flex;
@@ -153,7 +153,7 @@ body {
 }
 
 #sample_start, #sample_length {
-    max-width: 50px;
+    max-width: 60px;
     margin-right: 10px;
     font-size: 12px;
 }
@@ -170,7 +170,7 @@ body {
     margin-bottom: 24px;
 }
 
-#donate {
+#donate, #rate {
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
@@ -203,25 +203,12 @@ body {
 
 
 .reversed-pressed {
-    background-color: #18BC9C;
+    background-color: rgba(52, 152, 219, 0.976);
     color:white
+
 }
 
-.loop-pressed {
-    background-color: #E74C3C;
-    color: white;
-}
-
-/* #reverse-button {
-    background-image: url("/images/reverse.svg");
-    background-repeat: no-repeat;
-    width: 41px;
-    height: 36px;
-    background-size: 23px;
-    background-position: center;
-} */
-
-#donateMsg {
+#donateMsg, #rateMsg {
     color: white;
     font-size: 14px;
     font-weight: 300;
@@ -231,9 +218,10 @@ body {
     line-height: 1;
 }
 
-#donateButton, #downloadButton, #start-end-control, h2 {
+#rateButton, #donateButton, #downloadButton, #start-end-control, h2 {
     letter-spacing: 0.3px;
 }
+
 
 .contact-me, .tutorial, .menu {
     color: white;
@@ -281,7 +269,6 @@ body {
       font-weight: 800;
   }
 
-
 .delete {
     color: black;
 }
@@ -289,7 +276,7 @@ body {
 .btn-black {
     border-color: black;
 }
- 
+
 .delete:hover {
     background-color:black;
     color: white;
@@ -312,15 +299,13 @@ body {
     font-weight: bold;
 }
 
-/*#######################################################################*/
-
 @font-face {
     font-family: 'icomoon';
-    src:  url('fonts/icomoon.eot?8job4w');
-    src:  url('fonts/icomoon.eot?8job4w#iefix') format('embedded-opentype'),
-      url('fonts/icomoon.ttf?8job4w') format('truetype'),
-      url('fonts/icomoon.woff?8job4w') format('woff'),
-      url('fonts/icomoon.svg?8job4w#icomoon') format('svg');
+    src:  url('fonts/icomoon.eot?f6a5ip');
+    src:  url('fonts/icomoon.eot?f6a5ip#iefix') format('embedded-opentype'),
+      url('fonts/icomoon.ttf?f6a5ip') format('truetype'),
+      url('fonts/icomoon.woff?f6a5ip') format('woff'),
+      url('fonts/icomoon.svg?f6a5ip#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -329,7 +314,7 @@ body {
   [class^="icon-"], [class*=" icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'icomoon' !important;
-    speak: never;
+    speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -341,10 +326,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
   }
   
-  .icon-reverse:before {
-    content: "\e903";
-  }
-
   .icon-stop:before {
     content: "\e900";
   }
@@ -354,11 +335,6 @@ body {
   .icon-wave:before {
     content: "\e902";
   }
-  .icon-loop:before {
-    content: "\e982";
-  }
-
-/*#######################################################################*/
   
   .preferences-body {
     margin-left: 50px;

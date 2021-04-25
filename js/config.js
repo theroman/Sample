@@ -2,6 +2,7 @@ export default class Config {
   constructor() {
     this.EXTENSION_PROPERTIES = {
       donationsURL: 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2A4L9MZ4BVBEC',
+      ratingURL: 'https://chrome.google.com/webstore/detail/sample/kpkcennohgffjdgaelocingbmkjnpjgc',
       devEmail: 'romanwhatwhat@gmail.com',
     };
     this.CAPTURE_PROPERTIES = {audio: true};

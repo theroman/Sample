@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   port.postMessage(data);
 });
 
-document.addEventListener('click', async (e) => {
+document.addEventListener('click', (e) => {
   const clickedElementClassList = e.target.classList;
   if (clickedElementClassList.contains('start-recording')) {
     port.postMessage({'msg': 'startRecording'});
@@ -46,6 +46,10 @@ document.addEventListener('click', async (e) => {
     const donationURL = CONFIG.EXTENSION_PROPERTIES.donationsURL;
     chrome.tabs.create({url: donationURL});
   }
+  if (clickedElementClassList.contains('rate')) {
+    const ratingURL = CONFIG.EXTENSION_PROPERTIES.ratingURL;
+    chrome.tabs.create({url: ratingURL});
+  }
   if (clickedElementClassList.contains('contact-me')) {
     const emailTo = `mailto: ${CONFIG.EXTENSION_PROPERTIES.devEmail}`;
     chrome.tabs.create({url: emailTo});
@@ -64,14 +68,6 @@ document.addEventListener('click', async (e) => {
       'duration': waveSurfer.ws.getDuration(),
       'recordingURL': recordingURL});
   }
-
-  if (clickedElementClassList.contains('loop')) {
-    const data = {'msg': 'loopSample', 'hasWaveSurferLoaded': true, "sampleDerutaion": await waveSurfer.getRegionDuration()}
-    const shouldLoop = await shouldLoopSample();
-    waveSurfer.setLoop(shouldLoop);
-    updateUI(data);
-  }
-
   if (e.target.closest('.delete')) {
     chrome.storage.local.remove('recordingURL');
     waveSurfer.ws.destroy();
@@ -80,21 +76,11 @@ document.addEventListener('click', async (e) => {
     port.postMessage(data);
     updateUI(data);
   }
-
-  
   if (e.target.closest('.p-preferences')) {
     if (currentPage != 'preferences') {
       currentPage = 'preferences';
       const data = {'msg': 'init', 'page': currentPage};
       updateUI(data);
-      port.postMessage(data);
-    }
-  }
-  if (e.target.closest('.p-news')) {
-    if (currentPage != 'news') {
-      currentPage = 'news';
-      const data = {'msg': 'init', 'page': currentPage};
-      updateUI(data);getPreferencesSampleRate
       port.postMessage(data);
     }
   }
@@ -143,8 +129,6 @@ port.onMessage.addListener(async (data) => {
       waveSurfer.ws.destroy();
     }
     waveSurfer = new WaveSurferControl(data.recordingURL);
-    const shouldLoop = await shouldLoopSample(false);
-    waveSurfer.setLoop(shouldLoop);
     data.hasWaveSurferLoaded = await waveSurfer.hasLoaded;
   }
 
@@ -172,26 +156,9 @@ const getSampleConfig = () => {
 };
 
 const getPreferencesSampleRate = () => {
-  const sampleRateData = document.querySelector('#sample-rate');
-  if (sampleRateData) {
-    return parseInt(sampleRateData.selectedOptions[0].value);
-  }
+  return parseInt(document.querySelector('#sample-rate').selectedOptions[0].value);
 };
 
 const getPreferencesSampleChannels = () => {
-  const sampleChannelsData = document.querySelector('#sample-type');
-  if (sampleChannelsData) {
-    return parseInt(sampleChannelsData.selectedOptions[0].value);
-  }
-};
-
-const shouldLoopSample = async (wasPressed=true) => {
-  let isLoopStatus = await chrome.storage.local.get('is_loop');
-  isLoopStatus = isLoopStatus.is_loop;
-  let isLoop = isLoopStatus;
-  if (wasPressed) {
-     isLoop = !isLoopStatus;
-  }
-  await chrome.storage.local.set({'is_loop': isLoop});
-  return isLoop
+  return parseInt(document.querySelector('#sample-type').selectedOptions[0].value);
 };

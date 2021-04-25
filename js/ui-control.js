@@ -1,6 +1,5 @@
 import {elementClassToTooltipConfig, menuConfig} from './tippy-utils.js';
 let reverseButtonStatus = '';
-let loopButtonStatus = '';
 
 export const updateUI = (data) => {
   if (data.msg == 'init') {
@@ -21,9 +20,6 @@ export const updateUI = (data) => {
   if (data.msg == 'hideTutorial') {
     hideTutorial(data);
   }
-  if (data.msg == 'loopSample') {
-    refreshSampleControl(data);
-  }
   initTooltips();
 };
 
@@ -34,8 +30,7 @@ const initState = (data) => {
 const initFinishedState = async (data) => {
   data.recordButtonStatus = 'active';
   data.stopButtonStatus = 'not-active';
-  reverseButtonStatus = await getReverseButtonStatus(data);
-  loopButtonStatus = await getLoopButtonStatus(data);
+  reverseButtonStatus = await getReverseButtonStatus();
   updateRecodringControls(data);
   updateSampleControl(data);
   updateFooter(data);
@@ -53,7 +48,6 @@ const recordingStartedState = (data) => {
 
 const recordingFinishedState = async (data) => {
   reverseButtonStatus = await getReverseButtonStatus(data);
-  loopButtonStatus = await getLoopButtonStatus(data);
 
   updateRecodringControls(data);
   updateSampleControl(data);
@@ -80,12 +74,6 @@ const setRecodringControlsStatus = async (data) => {
   }
 };
 
-const refreshSampleControl = async (data) => {
-  reverseButtonStatus = await getReverseButtonStatus(data);
-  loopButtonStatus = await getLoopButtonStatus(data);
-  updateSampleControl(data);
-}
-
 const updateSampleControl = (data) => {
   let html = '';
   if (data.hasWaveSurferLoaded) {
@@ -108,11 +96,8 @@ const updateSampleControl = (data) => {
               <button class="btn btn-primary forward">
                 <i class="fa fa-step-forward forward"></i>
               </button>
-              <button id="reverse-button" data-tippy-content="Reverse" class="ttb btn btn-outline-success reverse ${reverseButtonStatus}">
-                <i class="icon-reverse reverse ${reverseButtonStatus}"></i>
-              </button>
-              <button id="loop-button" data-tippy-content="Loop" class="ttb btn btn-outline-danger loop ${loopButtonStatus}">
-                <i class="icon-loop loop ${loopButtonStatus}"></i>
+              <button id="reverse-button" data-tippy-content="Reverse" class="ttb btn btn-outline-info reverse ${reverseButtonStatus}">
+                <i class="fas fa-undo reverse ${reverseButtonStatus}"></i>
               </button>
             </section>
             <section id="start-end-control">
@@ -143,12 +128,19 @@ const updateDonate = () => {
   setHTMLIfExists('#donate', html);
 };
 
+const updateRating = () => {
+  const html = `<h5 id="rateMsg">Having fun?</h5>
+    <button id="rateButton" class="rate btn btn-info btn-sm">Rate Sample in chrome web store</button>`;
+  setHTMLIfExists('#rate', html);
+};
+
+
 const updateFooter = (data) => {
   const modalFooter = document.querySelector('.recording-footer');
   if (data.hasWaveSurferLoaded) {
     modalFooter.classList.remove('display-false');
     updateExport();
-    updateDonate();
+    updateRating();
   } else if (modalFooter) {
     modalFooter.classList.add('display-false');
   }
@@ -159,15 +151,6 @@ const getReverseButtonStatus = async () => {
   wasReversed = wasReversed.was_reversed;
   if (wasReversed == true) {
     return 'reversed-pressed';
-  }
-  return '';
-};
-
-const getLoopButtonStatus = async () => {
-  let loopStatus = await chrome.storage.local.get('is_loop');
-  let isLoop = loopStatus.is_loop;
-  if (isLoop == true) {
-    return 'loop-pressed';
   }
   return '';
 };
@@ -183,14 +166,8 @@ const getPopupInit = (data) => {
   <div class="modal-body">
     ${getRecordingSection(data.page)}
     ${getPreferencesSection(data.page)}
-    ${getNewsSection(data.page)}
   </div>`;
 };
-
-const getNewsSection = (page) => {
-  let html = '';
-  return html;
-}
 
 const getRecordingSection = (page) => {
   let html = '';
@@ -205,7 +182,7 @@ const getRecordingSection = (page) => {
       </div>
       <div class="recording-footer display-false">
         <div id="export"></div>
-        <div id="donate"></div>
+        <div id="rate"></div>
       </div>
     </div>
   `;
