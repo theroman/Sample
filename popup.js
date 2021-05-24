@@ -128,6 +128,7 @@ port.onMessage.addListener(async (data) => {
     if (waveSurfer && waveSurfer.ws) {
       waveSurfer.ws.destroy();
     }
+    console.log(data.recordingURL)
     waveSurfer = new WaveSurferControl(data.recordingURL);
     data.hasWaveSurferLoaded = await waveSurfer.hasLoaded;
   }

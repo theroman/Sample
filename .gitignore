@@ -1,4 +1,5 @@
 node_modules
+dist
 .eslintignore
 package.json
 package-lock.json

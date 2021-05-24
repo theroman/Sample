@@ -1,4 +1,3 @@
-import Record from './js/recorder.js';
 import Config from './js/config.js';
 import {getCurrentDatetime} from './js/utils.js';
 
@@ -40,7 +39,7 @@ const init = async (message, port) => {
   wasSampleConfigUpdated = await handleSampleConfig(message.sampleConfig);
   webAudioRecorderConfig = getWebAudioRecorderConfig({timeLimit: CONFIG.SAMPLE_PROPERTIES.timeLimit});
   if (!recorder) {
-    recorder = new Record(port, webAudioRecorderConfig);
+    recorder = new Recorder(port, webAudioRecorderConfig);
   } else {
     recorder.refreshPort(port);
   }
@@ -56,7 +55,7 @@ const init = async (message, port) => {
 const startRecording = async (port) => {
   clearLocalStorage(['recordingURL']);
   if (!recorder || wasSampleConfigUpdated) {
-    recorder = new Record(port, webAudioRecorderConfig);
+    recorder = new Recorder(port, webAudioRecorderConfig);
   }
   recordedSampleRate = currentSampleRate;
   recordedSampleChannels = currentSampleChannels;

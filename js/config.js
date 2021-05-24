@@ -10,6 +10,7 @@ export default class Config {
       workerDir: './js/external/web-audio-recorder/',
       fullWorkerDir: './js/external/web-audio-recorder/WebAudioRecorderWav.min.js',
       encoding: 'wav',
+      recorderWorkletPath: 'public/worklets/recorderWorkletProcessor.js'
     };
     this.SAMPLE_PROPERTIES = {
       sampleRate: 44100,

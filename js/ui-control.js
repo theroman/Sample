@@ -12,6 +12,7 @@ export const updateUI = (data) => {
     recordingStartedState(data);
   }
   if (data.msg == 'recordingFinished') {
+    console.log('ui...')
     recordingFinishedState(data);
   }
   if (data.msg == 'showTutorial') {
