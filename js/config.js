@@ -3,6 +3,7 @@ export default class Config {
     this.EXTENSION_PROPERTIES = {
       donationsURL: 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2A4L9MZ4BVBEC',
       ratingURL: 'https://chrome.google.com/webstore/detail/sample/kpkcennohgffjdgaelocingbmkjnpjgc',
+      betaURL: 'https://forms.gle/UxGeC7P4wKGShEXt9',
       devEmail: 'romanwhatwhat@gmail.com',
     };
     this.CAPTURE_PROPERTIES = {audio: true};

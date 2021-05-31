@@ -50,6 +50,10 @@ document.addEventListener('click', (e) => {
     const ratingURL = CONFIG.EXTENSION_PROPERTIES.ratingURL;
     chrome.tabs.create({url: ratingURL});
   }
+  if (clickedElementClassList.contains('beta-sign-up')) {
+    const betaURL = CONFIG.EXTENSION_PROPERTIES.betaURL;
+    chrome.tabs.create({url: betaURL});
+  }
   if (clickedElementClassList.contains('contact-me')) {
     const emailTo = `mailto: ${CONFIG.EXTENSION_PROPERTIES.devEmail}`;
     chrome.tabs.create({url: emailTo});
@@ -128,7 +132,6 @@ port.onMessage.addListener(async (data) => {
     if (waveSurfer && waveSurfer.ws) {
       waveSurfer.ws.destroy();
     }
-    console.log(data.recordingURL)
     waveSurfer = new WaveSurferControl(data.recordingURL);
     data.hasWaveSurferLoaded = await waveSurfer.hasLoaded;
   }

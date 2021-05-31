@@ -170,7 +170,7 @@ body {
     margin-bottom: 24px;
 }
 
-#donate, #rate {
+#donate, #rate, #beta-sign-up {
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
@@ -208,7 +208,7 @@ body {
 
 }
 
-#donateMsg, #rateMsg {
+#donateMsg, #rateMsg, #betaSignupMsg {
     color: white;
     font-size: 14px;
     font-weight: 300;
@@ -218,7 +218,7 @@ body {
     line-height: 1;
 }
 
-#rateButton, #donateButton, #downloadButton, #start-end-control, h2 {
+#betaSignupButton, #rateButton, #donateButton, #downloadButton, #start-end-control, h2 {
     letter-spacing: 0.3px;
 }
 

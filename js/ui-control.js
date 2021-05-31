@@ -12,7 +12,6 @@ export const updateUI = (data) => {
     recordingStartedState(data);
   }
   if (data.msg == 'recordingFinished') {
-    console.log('ui...')
     recordingFinishedState(data);
   }
   if (data.msg == 'showTutorial') {
@@ -64,7 +63,6 @@ const updateRecodringControls = async (data) => {
 
 const setRecodringControlsStatus = async (data) => {
   let recordingStarted = await chrome.storage.local.get('recording_started');
-  console.log(recordingStarted);
   recordingStarted = recordingStarted.recording_started;
   if (recordingStarted) {
     data.recordButtonStatus = 'recording';
@@ -135,13 +133,19 @@ const updateRating = () => {
   setHTMLIfExists('#rate', html);
 };
 
+const updateBetaSignup = () => {
+  const html = `<h5 id="betaSignupMsg">Help me to improve Sample</h5>
+    <button id="betaSignupButton" class="beta-sign-up btn btn-info btn-sm">Sign up for version 2.0 beta</button>`;
+  setHTMLIfExists('#beta-sign-up', html);
+};
+
 
 const updateFooter = (data) => {
   const modalFooter = document.querySelector('.recording-footer');
   if (data.hasWaveSurferLoaded) {
     modalFooter.classList.remove('display-false');
     updateExport();
-    updateRating();
+    updateBetaSignup();
   } else if (modalFooter) {
     modalFooter.classList.add('display-false');
   }
@@ -183,7 +187,7 @@ const getRecordingSection = (page) => {
       </div>
       <div class="recording-footer display-false">
         <div id="export"></div>
-        <div id="rate"></div>
+        <div id="beta-sign-up"></div>
       </div>
     </div>
   `;
